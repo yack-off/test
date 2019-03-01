@@ -81,9 +81,35 @@ export default class SwipeImg extends Component {
         x: -this.state.firstCoor.x + e.nativeEvent.offsetX,
         y: -this.state.firstCoor.y + e.nativeEvent.offsetY
       }
-      const imgCoor = {
-        x: this.state.imgCoor.x + (swipeCoor.x)/15,
-        y: this.state.imgCoor.y + (swipeCoor.y)/15
+      let imgCoor = {
+        x: 0,
+        y: 0
+      }
+      if (this.state.sidesImg.maxX > this.state.imgCoor.x + (swipeCoor.x)/15 && this.state.sidesImg.minX < this.state.imgCoor.x + (swipeCoor.x)/15){
+        imgCoor = {
+          x: this.state.imgCoor.x + (swipeCoor.x)/15
+        }   
+      } else if (this.state.sidesImg.maxX < this.state.imgCoor.x + (swipeCoor.x)/15) {
+        imgCoor = {
+          x: this.state.sidesImg.maxX
+        }   
+      } else if (this.state.sidesImg.minX > this.state.imgCoor.x + (swipeCoor.x)/15) {
+        imgCoor = {
+          x: this.state.sidesImg.minX
+        }   
+      }
+      if (this.state.sidesImg.maxY > this.state.imgCoor.y + (swipeCoor.y)/15 && this.state.sidesImg.minY < this.state.imgCoor.y + (swipeCoor.y)/15){
+        imgCoor = {
+          y: this.state.imgCoor.y + (swipeCoor.y)/15
+        }   
+      } else if (this.state.sidesImg.maxY < this.state.imgCoor.y + (swipeCoor.y)/15) {
+        imgCoor = {
+          y: this.state.sidesImg.maxY
+        }   
+      } else if (this.state.sidesImg.minY > this.state.imgCoor.y + (swipeCoor.y)/15) {
+        imgCoor = {
+          y: this.state.sidesImg.minY
+        }   
       }
       const width = this.state.width
       const height = this.state.height
@@ -114,26 +140,24 @@ export default class SwipeImg extends Component {
   async componentDidUpdate(prevProps, prevState) {
       if (prevState.link !== this.state.link) {
         this.setState({sidesImg: {...this.firstState.sidesImg}, imgCoor: {...this.firstState.imgCoor}}) 
-          const img = new Image()
-          img.src = this.state.link
-          img.onload = () => {
-          this.setState({width: img.width, height: img.height, yasha: true})
-          console.log(this.state.width)
-          }
+        const img = new Image()
+        img.src = this.state.link
+        img.onload = () => {
+        this.setState({width: img.width, height: img.height, yasha: true})
+        }
       }
       if(this.state.yasha) {
-        console.log(this.state.width)
         const width = this.state.width
         const height = this.state.height
         if (width > height) {
-          const count = (228*width)/height 
+          const count = Math.round((228*width)/height)
           const maxX = Math.floor((count - 228)/2)
-          const minX = Math.round((-count + 228)/2) 
+          const minX = Math.ceil((-count + 228)/2) 
           this.setState({sidesImg: { height: 228, width: '100%', maxX: maxX, minX: minX }, imgCoor: {x: 0, y: 178}})
         } else if (width < height) {
-          const count = (228*height)/width
+          const count = Math.round((228*height)/width)
           const maxY = Math.floor((count - 228)/2)
-          const minY = Math.round((-count + 228)/2)
+          const minY = Math.ceil((-count + 228)/2)
           this.setState({sidesImg: { height: '100%', width: 228, maxY: maxY, minY: minY }, imgCoor: {x: 178, y: 0}})
         } else {
           this.setState({sidesImg: { height: 228, width: 228 }})
