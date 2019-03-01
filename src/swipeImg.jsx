@@ -82,8 +82,10 @@ export default class SwipeImg extends Component {
         x: this.state.imgCoor.x + (swipeCoor.x)/15,
         y: this.state.imgCoor.y + (swipeCoor.y)/15
       }
-      const width = document.querySelector('.fakeImg').width
-      const height = document.querySelector('.fakeImg').height
+      const img = new Image()
+      img.src = this.state.link
+      const width = img.width
+      const height = img.height
       if (width >= height) {
         if((this.state.sidesImg.maxX + this.state.imgCoor.x >= 0) && (-this.state.sidesImg.minX - this.state.imgCoor.x >= 0)) {
           this.setState({imgCoor: {x : imgCoor.x, y: 178}})
@@ -130,13 +132,12 @@ export default class SwipeImg extends Component {
           this.setState({sidesImg: { height: 228, width: 228 }})
         }
       }
-    }, 100)
+    }, 200)
   }
 
   render() {
     return (
       <div className="App">
-        <img className="fakeImg" src={this.state.link} hidden/>
         <div>
             <input className="input-link" onKeyDown={this.addLink} onChange={this.handleChange}/>
             <button onClick={this.addLinkButton} className='a'>Запустить</button>
