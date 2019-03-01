@@ -101,7 +101,7 @@ export default class SwipeImg extends Component {
         if((this.state.sidesImg.maxY + this.state.imgCoor.y >= 0) && (-this.state.sidesImg.minY - this.state.imgCoor.y >= 0)) {
           this.setState({imgCoor: {y : imgCoor.y, x: 178}})
         } else {
-          if (this.state.sidesImg.maxY + this.state.imgCoor.y == 0){
+          if (this.state.sidesImg.maxY + this.state.imgCoor.y < 0){
             this.setState({imgCoor:{y: this.state.sidesImg.minY, x: 178}})
           } else {
             this.setState({imgCoor:{y: this.state.sidesImg.maxY, x: 178}})
