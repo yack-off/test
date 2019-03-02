@@ -4,7 +4,7 @@ import './App.css';
 export default class SwipeImg extends Component {
 
   state = {
-    yasha: false,
+    isNewImg: false,
     preLink: '',
     link: '',
     isMouseDown: false,
@@ -143,26 +143,26 @@ export default class SwipeImg extends Component {
         const img = new Image()
         img.src = this.state.link
         img.onload = () => {
-        this.setState({width: img.width, height: img.height, yasha: true})
+        this.setState({width: img.width, height: img.height, isNewImg: true})
         }
       }
-      if(this.state.yasha) {
+      if(this.state.isNewImg) {
         const width = this.state.width
         const height = this.state.height
         if (width > height) {
           const count = Math.round((228*width)/height)
           const maxX = Math.floor((count - 228)/2)
           const minX = Math.ceil((-count + 228)/2) 
-          this.setState({sidesImg: { height: 228, width: '100%', maxX: maxX, minX: minX }, imgCoor: {x: 0, y: 178}})
+          this.setState({sidesImg: { height: 228, width: document.querySelector('.svg-img').width.baseVal.value, maxX: maxX, minX: minX }, imgCoor: {x: 0, y: 178}})
         } else if (width < height) {
           const count = Math.round((228*height)/width)
           const maxY = Math.floor((count - 228)/2)
           const minY = Math.ceil((-count + 228)/2)
-          this.setState({sidesImg: { height: '100%', width: 228, maxY: maxY, minY: minY }, imgCoor: {x: 178, y: 0}})
+          this.setState({sidesImg: { height: document.querySelector('.svg-img').height.baseVal.value, width: 228, maxY: maxY, minY: minY }, imgCoor: {x: 178, y: 0}})
         } else {
           this.setState({sidesImg: { height: 228, width: 228 }})
         }
-        this.setState({yasha: false})
+        this.setState({isNewImg: false})
       }
   }
 
@@ -174,7 +174,7 @@ export default class SwipeImg extends Component {
             <button onClick={this.addLinkButton} className='a'>Запустить</button>
         </div>
         <div>
-        <svg width="584" height="584">
+        <svg width="584" height="584" className='svg-img'>
           <defs>
             <clipPath id="image-clip-path">
               <rect x="178" y="178" width="228" height="228"/>
@@ -194,6 +194,7 @@ export default class SwipeImg extends Component {
             width={this.state.sidesImg.width}
             height={this.state.sidesImg.height} 
             xlinkHref={this.state.link}
+            preserveAspectRatio="xMidYMid meet"
           />
 
         </svg>
